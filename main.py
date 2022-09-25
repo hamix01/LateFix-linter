@@ -12,7 +12,6 @@ import pages.menu as menu
 
 
 
-def main():
     jsonFile = open("config.json")
     jsonData = json.load(jsonFile)
     # lineBreakSize = jsonData["lineBreakSize"]
