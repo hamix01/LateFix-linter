@@ -1,76 +1,54 @@
 import sys
 import json
-import pages.welcome as welcome
-import pages.menu as menu
-# from pages import functions
 
+from pages.functions import logic
+    # from pages import functions
 
+def printFlags():
+    # print the flags that are set
 
+    print("""
+    Usages: python3 main.py [source file] [destination file (optional)] [flags]
+    
+    The following flags are set:
+    
+    --betterGitSupport      Gives a better git support
+    --lineBreakSize         Sets the line break size
+    """)
 
-
-# linter
-
-
-
+def getData():
+    # get args
+    args = sys.argv
+    
     jsonFile = open("config.json")
     jsonData = json.load(jsonFile)
-    # lineBreakSize = jsonData["lineBreakSize"]
-    # betterGitSupport = jsonData["betterGitSupport"]
+    lineBreakSize = jsonData["lineBreakSize"]
+    betterGitSupport = jsonData["betterGitSupport"]
 
-    # file = open( "hello.tex")
-    getInput = input(">> ")
-    print(welcome, getInput)
-    if getInput == "menu":
-        print(menu)
-    elif getInput == "exit" or "q":
-        print("Bye, bye - Have a nice day!")
+    if(len(args) > 1):
+        if(args[1] == "--help" or args[1] == "-h"):
+            printFlags()
+            return
     else:
-        print("That is not a valid choice. You can only choose from the menu.")
-        input("\nPress enter to continue...")
+        printFlags()
+        return
 
+    for i in args:
+        if "--betterGitSupport" in i:
+            betterGitSupport = True
+        if "--lineBreakSize" in i:
+            lineBreakSize = args[args.index(i) + 1]
 
-    
+    print("Line break size: " + str(lineBreakSize))
 
-    
+    filePath = args[1]
+    file = open(filePath, "r")
 
-    #print(functions.process(file, betterGitSupport, lineBreakSize))
-    # # while (True):
-    # #     print(menu)
+    print(logic(file, betterGitSupport, lineBreakSize))
 
+def main():
+    getData()
 
-
-    # #     args = input(">> ")
-    # #     print(args)
-
-    # #     if args == "q":
-    # #         print("Bye, bye - I hope you got help!")
-    # #         break
-    # #     else:
-    # #         print("That is not a valid choice. You can only choose from the menu.")
-    # #     input("\nPress enter to continue...")
-
-
-
-# #args = sys.argv
-    # # args = ['main.py', 'hello.tex', 'betterGitSupport:', 'True']
-    # # f = open( "hello.tex")#args[1])
-    # # print(args)
-
-    # # if len(args) == 2:
-    # #     betterGitSupport = jsonData["betterGitSupport"]
-    # #     lineBreakSize = jsonData["lineBreakSize"]
-    # # elif len(args) == 3:
-    # #     if "git" in args[2] and args[2] == "True":
-    # #         betterGitSupport = True
-    # #         lineBreakSize = jsonData["lineBreakSize"]
-
-    # #     elif "line" in args[2]:
-    # #         lineBreakSize = args[3]
-    # #         betterGitSupport = jsonData["betterGitSupport"]
-    # # elif len(args) == 5:
-    # #     betterGitSupport = args[3]
-    # #     lineBreakSize = args[5]
-        
 
 
 if __name__ == "__main__":

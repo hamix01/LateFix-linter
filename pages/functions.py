@@ -23,44 +23,44 @@ def addNewLines(line, number = 0):
 def checkStatement(statement):
     return statement
 
-def tabForBlocks(file):
-    adjustedText = "" 
+# def tabForBlocks(file, betterGitSupport, lineBreakSize):
+#     adjustedText = "" 
 
-    for line in file:
-        if "begin{" in line and "document" not in line or stack != "":
-            stack = line
-        if "begin{" not in line and "end{" not in line:
-            line = addTaps(line)
-            if checkStatement(betterGitSupport):
-                adjustedText += breakUpSentences(line, "\n\t")
-            else:
-                adjustedText += line
-        else:
-            adjustedText += line
-        if "end{" in line:
-            stack = ""
-    return
+#     for line in file:
+#         if "begin{" in line and "document" not in line or stack != "":
+#             stack = line
+#         if "begin{" not in line and "end{" not in line:
+#             line = addTaps(line)
+#             if checkStatement(betterGitSupport):
+#                 adjustedText += breakUpSentences(line, "\n\t")
+#             else:
+#                 adjustedText += line
+#         else:
+#             adjustedText += line
+#         if "end{" in line:
+#             stack = ""
+#     return
 
-def process(file, betterGitSupport, lineBreakSize):
+def logic(file, betterGitSupport, lineBreakSize):
     
     adjustedText = "" 
     stack = ""
     lines = 0
 
 
-    # for line in file:
-    #     if "begin{" in line and "document" not in line or stack != "":
-    #         stack = line
-    #         if "begin{" not in line and "end{" not in line:
-    #             line = addTaps(line)
-    #             if checkStatement(betterGitSupport):
-    #                 adjustedText += breakUpSentences(line, "\n\t")
-    #             else:
-    #                 adjustedText += line
-    #         else:
-    #             adjustedText += line
-    #         if "end{" in line:
-    #             stack = ""
+    for line in file:
+        if "begin{" in line and "document" not in line or stack != "":
+            stack = line
+            if "begin{" not in line and "end{" not in line:
+                line = addTaps(line)
+                if checkStatement(betterGitSupport):
+                    adjustedText += breakUpSentences(line, "\n\t")
+                else:
+                    adjustedText += line
+            else:
+                adjustedText += line
+            if "end{" in line:
+                stack = ""
 
     
     if checkStatement(betterGitSupport) and "\\" != line[0] and "%" != line[0] and line != "\n":
