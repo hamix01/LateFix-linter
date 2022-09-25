@@ -72,31 +72,19 @@ def logic(file, betterGitSupport, lineBreakSize):
 
     adjustedText = ""
 
+    for line in file:
+        if "begin{" in line:
+            adjustedText += listBlock(file, betterGitSupport)
+        elif "%" in line[0]:
+            # if there is no space after the %
+            if line[1] != " ":
+                adjustedText = adjustedText.replace(line, "") # we remove the original line
+                adjustedText += line.replace("%", "% ") 
+        elif lineBreakSize != 0:
+            adjustedText += addNewLines(line, lineBreakSize)
+
     if betterGitSupport:
-        for line in file:
-            adjustedText += gitSupport(line, "\n") 
-            if "begin{" in line:
-                print(line)
-                adjustedText += listBlock(file, betterGitSupport)
-            elif "%" in line[0]:
-                # if there is no space after the %
-                if line[1] != " ":
-                    adjustedText = adjustedText.replace(line, "") # we remove the original line
-                    adjustedText += line.replace("%", "% ") # and add a space after the %
-            elif lineBreakSize != 0:
-                adjustedText += addNewLines(line, lineBreakSize)
-
-    else:
-        for line in file:
-            adjustedText += line
-            if "begin{" in line:
-                adjustedText += listBlock(file)
-            elif "%" in line[0]:
-                adjustedText += addSpace(line[1:])
-            elif lineBreakSize != 0:
-                adjustedText += addNewLines(line, (lineBreakSize))
-
-
+        adjustedText = gitSupport(adjustedText, "\n")
     
     file.close()
     return adjustedText
