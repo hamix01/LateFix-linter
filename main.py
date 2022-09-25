@@ -1,20 +1,6 @@
 import sys
 import json
-
-from pages.functions import logic
-    # from pages import functions
-
-def printFlags():
-    # print the flags that are set
-
-    print("""
-    Usages: python3 main.py [source file] [destination file (optional)] [flags]
-    
-    The following flags are set:
-    
-    --betterGitSupport      Gives a better git support
-    --lineBreakSize         Sets the line break size
-    """)
+import pages.functions as functions
 
 def getData():
     # get args
@@ -27,24 +13,29 @@ def getData():
 
     if(len(args) > 1):
         if(args[1] == "--help" or args[1] == "-h"):
-            printFlags()
+            functions.printFlags()
             return
     else:
-        printFlags()
+        functions.printFlags()
         return
 
     for i in args:
         if "--betterGitSupport" in i:
             betterGitSupport = True
         if "--lineBreakSize" in i:
-            lineBreakSize = args[args.index(i) + 1]
+            lineBreakSize = int(args[args.index(i) + 1])
 
+    print("Better git support: " + str(betterGitSupport))
     print("Line break size: " + str(lineBreakSize))
 
     filePath = args[1]
-    file = open(filePath, "r")
+    if functions.isTex(filePath):
+        file = open(filePath, "r")
+        print(functions.logic(file, betterGitSupport, lineBreakSize))
+    else:
+        print("The file is not a tex file")
 
-    print(logic(file, betterGitSupport, lineBreakSize))
+
 
 def main():
     getData()

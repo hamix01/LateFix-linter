@@ -1,5 +1,18 @@
 #functions collection
 
+def printFlags():
+    # print the flags that are set
+
+    print("""
+    Usages: python3 main.py [source file] [destination file (optional)] [flags]
+    
+    The following flags are set:
+    
+    --betterGitSupport      Gives a better git support
+    --lineBreakSize         Sets the line break size
+    """)
+
+
 def addTaps(line):
     # if tap in line? else tap
     if line[0] == "\t":
@@ -7,7 +20,8 @@ def addTaps(line):
     else:
         return "\t" + line
 
-def breakUpSentences(line, newLine = "\n"):
+
+def gitSupport(line, newLine = "\n"):
     signs = [":", ";", ",", ".", "!", "?"]
     for i in signs:
         if i in line:
@@ -16,80 +30,74 @@ def breakUpSentences(line, newLine = "\n"):
                 line = line.replace(i, i + newLine)
     return line
 
+
 def addNewLines(line, number = 0):
     return (number * "\n") + line
 
 
-def checkStatement(statement):
-    return statement
+def addSpace(word):
+    return " " + word
 
-# def tabForBlocks(file, betterGitSupport, lineBreakSize):
-#     adjustedText = "" 
-
-#     for line in file:
-#         if "begin{" in line and "document" not in line or stack != "":
-#             stack = line
-#         if "begin{" not in line and "end{" not in line:
-#             line = addTaps(line)
-#             if checkStatement(betterGitSupport):
-#                 adjustedText += breakUpSentences(line, "\n\t")
-#             else:
-#                 adjustedText += line
-#         else:
-#             adjustedText += line
-#         if "end{" in line:
-#             stack = ""
-#     return
-
-def logic(file, betterGitSupport, lineBreakSize):
+def isTex(file):
+    # check if the file is a tex file
+    if ".tex" in file:
+        return True
+    else:
+        return False
     
-    adjustedText = "" 
-    stack = ""
-    lines = 0
 
+def listBlock(file, betterGitSupport=False):
+    adjustedText = ""
 
     for line in file:
-        if "begin{" in line and "document" not in line or stack != "":
-            stack = line
-            if "begin{" not in line and "end{" not in line:
-                line = addTaps(line)
-                if checkStatement(betterGitSupport):
-                    adjustedText += breakUpSentences(line, "\n\t")
-                else:
-                    adjustedText += line
+
+        if "begin{" not in line and "\end{" not in line:
+            line = addTaps(line)
+            if betterGitSupport:
+                adjustedText += gitSupport(line, "\n\t")
             else:
                 adjustedText += line
-            if "end{" in line:
-                stack = ""
-
-    
-    if checkStatement(betterGitSupport) and "\\" != line[0] and "%" != line[0] and line != "\n":
-        adjustedText += breakUpSentences(line, "\n")
-
-    elif "%" == line[0]:
-        adjustedText += line.replace("%", "% ")
-
-    elif "\\" == line[0] and lines < lineBreakSize:
-        n = len(adjustedText)
-        for i in range(0, len(adjustedText)):
-            if adjustedText[-1-i:n] == "\n":
-                lines += 1
-                n -= 1
-            else:
-                break
-
-        if lines-1 < lineBreakSize:
-            adjustedText += addNewLines(line, (lineBreakSize))
-        elif lines-1 > lineBreakSize:
-            endIndex = len(adjustedText) - (lines-1 - lineBreakSize)
-            adjustedText = adjustedText[:endIndex]
-            adjustedText += line
         else:
             adjustedText += line
-        lines = 0
+        if "\end{" in line:
+            break
+    
+    return adjustedText
+
+
+
+
+
+def logic(file, betterGitSupport, lineBreakSize):
+
+    adjustedText = ""
+
+    if betterGitSupport:
+        for line in file:
+            adjustedText += gitSupport(line, "\n") 
+            if "begin{" in line:
+                print(line)
+                adjustedText += listBlock(file, betterGitSupport)
+            elif "%" in line[0]:
+                # if there is no space after the %
+                if line[1] != " ":
+                    adjustedText = adjustedText.replace(line, "") # we remove the original line
+                    adjustedText += line.replace("%", "% ") # and add a space after the %
+            elif lineBreakSize != 0:
+                adjustedText += addNewLines(line, lineBreakSize)
 
     else:
-        adjustedText += line
+        for line in file:
+            adjustedText += line
+            if "begin{" in line:
+                adjustedText += listBlock(file)
+            elif "%" in line[0]:
+                adjustedText += addSpace(line[1:])
+            elif lineBreakSize != 0:
+                adjustedText += addNewLines(line, (lineBreakSize))
 
+
+    
     file.close()
     return adjustedText
+        
