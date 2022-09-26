@@ -25,7 +25,7 @@ def addTaps(line):
     return line
 
 
-def gitSupport(line):
+def newSentence(line):
     marks = [":", ";", ",", ".", "!", "?"]
     for i in marks:
         if i in line:
@@ -41,7 +41,6 @@ def addSpace(word):
     return " " + word
 
 
-
 def listBlock(file, betterGitSupport=False):
     adjustedText = ""
 
@@ -50,7 +49,7 @@ def listBlock(file, betterGitSupport=False):
         if "begin{" not in line and "\end{" not in line:
             line = addTaps(line)
             if betterGitSupport:
-                adjustedText += gitSupport(line)
+                adjustedText += newSentence(line)
             else:
                 adjustedText += line
         else:
@@ -68,7 +67,7 @@ def logic(file, betterGitSupport, lineBreakSize):
 
     if betterGitSupport:
         for line in file:
-            adjustedText += gitSupport(line) 
+            adjustedText += newSentence(line) 
             if "begin{" in line and "document" not in line:
                 print(line)
                 adjustedText += listBlock(file, betterGitSupport)
@@ -106,7 +105,7 @@ def logic(file, betterGitSupport, lineBreakSize):
     #         adjustedText += addNewLines(line, lineBreakSize)
 
     # if betterGitSupport:
-    #     adjustedText = gitSupport(adjustedText, "\n")
+    #     adjustedText = newSentence(adjustedText, "\n")
     
     file.close()
     return adjustedText
