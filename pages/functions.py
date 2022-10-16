@@ -1,10 +1,13 @@
 #functions collection
 
+from ast import operator
+
+
 def printFlags():
     # print the flags that are set
 
     print("""
-    Usages: python3 main.py [source file] [destination file (optional)] [flags]
+    Usages: python3 main.py [source file] [flags]
     
     The following flags are set:
     
@@ -12,101 +15,135 @@ def printFlags():
     --lineBreakSize         Sets the line break size
     """)
 
-def isTex(file):
-    # check if the file is a tex file
+def isTex(file): # check if the file is a tex file
+    isTex = False
     if ".tex" in file:
-        return True
-    else:
-        return False
-    
-def addTaps(line):
-    if line[0] != "\t":
-        line = "\t" + line
-    return line
+        isTex = True
+    return isTex
 
-
-def newSentence(line):
-    marks = [":", ";", ",", ".", "!", "?"]
-    for i in marks:
-        if i in line:
-            line = line.replace(i, i + "\n")
-    return line
-
-
-def addNewLines(line, number):
-    return (number * "\n") + line
-
-
-def addSpace(word):
-    return " " + word
-
-
-def listBlock(file, betterGitSupport=False):
-    adjustedText = ""
-
+def getText(filePath):
+    text = ""
+    file = open(filePath, "r")
     for line in file:
+        text += line
+    file.close()
+    return text
 
-        if "begin{" not in line and "\end{" not in line:
-            line = addTaps(line)
-            if betterGitSupport:
-                adjustedText += newSentence(line)
+def addTaps(line): # add taps to the line
+    return "\t" + line
+
+def addLines(text, number):
+    # finalText = ""
+    # for line in text.split("\n"):
+    #     line = (number * "\n") + line
+    #     finalText += line 
+    # print(finalText)
+    # for line in text.strip():
+    #     print(line + ">12312>s123213hell")
+
+    return number
+
+def removeLines(text, lineBreakSize):
+
+    finalText = ""
+    # text = text.replace('\n','')
+
+    # finalText = addLines(text, lineBreakSize)
+    for line in text:
+        # finalText += line.strip()
+        print(line.split("\n"))
+    # print(finalText)
+
+    return finalText
+
+
+def makeNewFile(text, name):
+    newFile = open(name, "w")
+    newFile.write(text)
+    newFile.close()
+    fileDone = "File " + name + " created"
+    return fileDone
+
+
+def spaceAfterComment(text):
+    finalText = ""
+    for line in text.split("\n"):
+        if containWord("%", line):
+            line = line.replace("%", " % ")
+        finalText += line + "\n"
+    return finalText
+
+def containWord(word, string): # check if a word is in a string
+    contains = False
+    if word in string:
+        contains =  True
+    return contains
+
+def chooseFileName():
+    fileName = input("Enter the file name: ") + ".tex"
+    return fileName
+
+def TabList(text):
+    finalText = ""
+    isList = False
+
+    for line in text.split("\n"):
+        if containWord("begin{", line) and not(containWord("document", line)) and not(containWord("%\begin", line)):
+            finalText += line + "\n"
+            isList = True
+            continue
+        elif isList:
+            if containWord("end{", line) and not(containWord("document", line)) and not(containWord("%\end", line)):
+                finalText += line + "\n"
+                isList = False
+                continue
             else:
-                adjustedText += line
+                finalText += addTaps(line) + "\n"
         else:
-            adjustedText += line
-        if "\end{" in line:
-            break
-    
-    return adjustedText
+            finalText += line + "\n"
+    return finalText
+
+def addNewLine(text):
+    finalText = ""
+    marks = [":", ";", ",", ".", "!", "?"]
+    for line in text.split("\n"):
+        for mark in marks:
+            if mark in line:
+                line = line.replace(mark, mark + "\n")
+        finalText += line + "\n"
+    return finalText
 
 
-def logic(file, betterGitSupport, lineBreakSize):
+def mathMode(text):
+#space after math mode
+    signs = ["+", "-", "*", "/", "=", "(", ")", "[", "]", "{", "}", ">", "<", "!", "|", "&", "^", "~", ":", ";", ",", ".", "!", "?", "$"]
+    finalText = ""
+    for line in text.split("\n"):
+        if containWord("$", line):
+            for sign in signs:
+                if sign in line:
+                    line = line.replace(sign, " " + sign + " ")
+        finalText += line + "\n"
+    return finalText
 
-    adjustedText = ""
-
+def logic(filePath, betterGitSupport, lineBreakSize):
+    text = getText(filePath)
+    # finalText = ""
 
     if betterGitSupport:
-        for line in file:
-            adjustedText += newSentence(line) 
-            if "begin{" in line and "document" not in line:
-                print(line)
-                adjustedText += listBlock(file, betterGitSupport)
-            elif "%" in line[0]:
-                # if there is no space after the %
-                if line[1] != " ":
-                    adjustedText = adjustedText.replace(line, "") # we remove the original line
-                    adjustedText += line.replace("%", "% ") # and add a space after the %
-            elif lineBreakSize != 0:
-                adjustedText += addNewLines(line, lineBreakSize)
+        text = addNewLine(text)
 
-    else:
-        for line in file:
-            adjustedText += line
-            if "begin{" in line and "document" not in line:
-                adjustedText += listBlock(file)
-            elif "%" in line[0]:
-                if line[1] != " ":
-                    adjustedText = adjustedText.replace(line, "") # we remove the original line
-                    adjustedText += line.replace("%", "% ") # and add a space after the %
-            elif lineBreakSize != 0:
-                adjustedText += addNewLines(line, (lineBreakSize))
-
-
-    # for line in file:
-    #     if "begin{" in line and "document" not in line:
-    #         adjustedText += line
-    #         adjustedText += listBlock(file, betterGitSupport)
-    #     elif "%" in line[0]:
-    #         # if there is no space after the %
-    #         if line[1] != " ":
-    #             adjustedText = adjustedText.replace(line, "") # we remove the original line
-    #             adjustedText += line.replace("%", "% ") 
-    #     elif lineBreakSize != 0:
-    #         adjustedText += addNewLines(line, lineBreakSize)
-
-    # if betterGitSupport:
-    #     adjustedText = newSentence(adjustedText, "\n")
+    if "begin{" in text:
+        text = TabList(text)
     
-    file.close()
-    return adjustedText
-        
+    text = spaceAfterComment(text)
+    text = mathMode(text)
+    
+    if lineBreakSize > 0:
+        text = removeLines(text, lineBreakSize)
+        # text = addLines(text, lineBreakSize)
+
+    # fileName = chooseFileName()
+    # fileDone = makeNewFile(finalText, fileName)
+    print(text)
+    return text

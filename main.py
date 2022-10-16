@@ -5,6 +5,7 @@ import pages.functions as functions
 def getData():
     # get args
     args = sys.argv
+
     
     jsonFile = open("config.json")
     jsonData = json.load(jsonFile)
@@ -30,8 +31,7 @@ def getData():
 
     filePath = args[1]
     if functions.isTex(filePath):
-        file = open(filePath, "r")
-        print(functions.logic(file, betterGitSupport, lineBreakSize))
+        functions.logic(filePath, betterGitSupport, lineBreakSize)
     else:
         print("The file is not a tex file")
 
@@ -40,7 +40,34 @@ def getData():
 def main():
     getData()
 
-
-
 if __name__ == "__main__":
     main()
+
+
+
+
+# import argparse
+
+# parser = argparse.ArgumentParser(description="Better git support and Line break size")
+# parser.add_argument("file", type=str, help="The file to be formatted")
+# parser.add_argument("betterGitSupport", type=bool, help="Better git support")
+# parser.add_argument("LineBreakSize", type=int, help="Decide the line break size")
+
+# args = parser.parse_args()
+
+
+########## NEW CODE IN MAIN ##########
+    # args = parser.parse_args()
+    # print(args)
+    # print(args.file)
+    # print(args.betterGitSupport)
+    # print(args.LineBreakSize)
+    # jsonFile = open("config.json")
+    # jsonData = json.load(jsonFile)
+
+    # print("Better git support: " + str(args.betterGitSupport))
+    # print("Line break size: " + str(args.LineBreakSize))
+    # if functions.isTex(args.file):
+    #     functions.logic(args.file, args.betterGitSupport, args.LineBreakSize)
+    # else:
+    #     print("The file is not a tex file")
