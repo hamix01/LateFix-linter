@@ -8,7 +8,8 @@ Lists:
     If \begin{document}
         No lines will be tapped until \begin{something else than document}
 
-    If \begin is commented with %, the text will not change. 
+    If \begin is commented with %:
+        all lines will be tapped after until it's new list \begin{...} in line or \end{...}
     
     If \end{document}
         All lines after will be tapped
@@ -52,7 +53,7 @@ Comments:
 
  
 
- Mathenivorment:
+ Math environment:
 
     Right now there is a bug that can cause problem in the text:
         if line contains "$":

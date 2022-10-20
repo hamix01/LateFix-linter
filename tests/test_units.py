@@ -1,16 +1,25 @@
-import pages.functions as functions
+"""
+    Test the functions in the functions.py file
+"""
+from pages import functions
 
-def test_isTex():
-    assert functions.isTex("test.tex") == True
+def test_is_tex():
+    """
+        Test if the file is a tex file
+    """
+    assert functions.is_tex("test.tex") == True
 
-def test_isNotTex():
-    assert functions.isTex("test.py") == False
+def test_is_not_tex():
+    """
+        Test if the file is not a tex file
+    """
+    assert functions.is_tex("test.py") == False
 
-def test_addTaps():
-    assert functions.addTaps("test") == "\ttest"
+def test_add_taps():
+    assert functions.add_taps("test") == "\ttest"
 
-def test_newSentence():
-    assert functions.newSentence("test;") == "test;\n"
+def test_new_sentence():
+    assert functions.new_sentence("test;") == "test;\n"
 
 def test_addNewLines():
     assert functions.addNewLines("test", 2) == "\n\ntest"
