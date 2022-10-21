@@ -1,18 +1,5 @@
 """functions collection"""
 
-
-def print_flags():
-    """ print the flags that are set"""
-
-    print("""
-    Usages: python3 main.py [source file] [flags]
-    
-    The following flags are set:
-    
-    --better_git_support      Gives a better git support
-    --line_break_size         Sets the line break size
-    """)
-
 def is_tex(file):
     """ check if the file is a tex file """
     tex = False
@@ -33,30 +20,30 @@ def add_taps(line):
     """ add taps to the line """
     return "\t" + line
 
-def add_lines(text, number):
-    """ add lines to the text """
-    # final_text = ""
-    # for line in text.split("\n"):
-    #     line = (number * "\n") + line
-    #     final_text += line
-    #     # print(final_text)
-    # for line in text.strip():
-    #     print(line + ">12312>s123213hell")
+# def add_lines(text, number):
+#     """ add lines to the text """
+#     # final_text = ""
+#     # for line in text.split("\n"):
+#     #     line = (number * "\n") + line
+#     #     final_text += line
+#     #     # print(final_text)
+#     # for line in text.strip():
+#     #     print(line + ">12312>s123213hell")
 
-    return number
+#     return number
 
-def remove_lines(text, line_break_size):
-    """ remove lines from the text """
-    final_text = ""
-    # text = text.replace('\n','')
-    lines = text.split("\n")
-    # final_text = addLines(text, line_break_size)
-    for line in lines:
-        # strip blank lines
-        if line != "":
-            final_text += line + "\n"
+# def remove_lines(text, line_break_size):
+#     """ remove lines from the text """
+#     final_text = ""
+#     # text = text.replace('\n','')
+#     lines = text.split("\n")
+#     # final_text = addLines(text, line_break_size)
+#     for line in lines:
+#         # strip blank lines
+#         if line != "":
+#             final_text += line + "\n"
 
-    return final_text
+#     return final_text
 
 
 def make_new_file(text, name):
@@ -66,7 +53,6 @@ def make_new_file(text, name):
     new_file.close()
     file_done = "File " + name + " created"
     return file_done
-
 
 def space_after_comment(text):
     """ add a space after a comment """
@@ -86,7 +72,7 @@ def contain_word(word, string):
 
 def choose_file_name():
     """ choose a file name """
-    file_name = input("Enter the file name: ") + ".tex"
+    file_name = input("Enter the new file name: ") + ".tex"
     return file_name
 
 def tab_list(text):
@@ -97,12 +83,12 @@ def tab_list(text):
     is_list = False
 
     for line in text.split("\n"):
-        if contain_word("begin{", line) and not contain_word("document", line) and not contain_word("%\begin", line):
+        if contain_word("begin{", line) and not contain_word("document", line):
             final_text += line + "\n"
             is_list = True
             continue
         elif is_list:
-            if contain_word("end{", line) and not contain_word("document", line) and not contain_word("%\end", line):
+            if contain_word("end{", line) and not contain_word("document", line):
                 final_text += line + "\n"
                 is_list = False
                 continue
@@ -144,7 +130,6 @@ def logic(file_path, better_git_support, line_break_size):
     This function will do the logic
     """
     text = get_text(file_path)
-    # final_text = ""
 
     if better_git_support:
         text = add_new_line(text)
@@ -153,11 +138,13 @@ def logic(file_path, better_git_support, line_break_size):
         text = tab_list(text)    
     text = space_after_comment(text)
     text = math_mode(text)    
-    if line_break_size >= 0:
-        text = remove_lines(text, line_break_size)
+
+    # if line_break_size >= 0:
+    #     text = remove_lines(text, line_break_size)
         # text = add_lines(text, line_break_size)
 
-    # file_name = choose_file_name()
-    # file_done = make_new_file(final_text, file_name)
-    print(text)
+    file_name = choose_file_name()
+    file_done = make_new_file(text, file_name)
+    print(file_done)
+    # print(text)
     return text
