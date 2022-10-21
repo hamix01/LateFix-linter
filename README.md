@@ -3,8 +3,8 @@
 This is a simple latex linter that is going to take a file as an input and fix it
 
 
-
 Lists:
+
     If \begin{document}
         No lines will be tapped until \begin{something else than document}
 
@@ -20,6 +20,7 @@ Lists:
 
 
 Better git support:
+
     If user set better git support to True:
         After [":", ";", ",", ".", "!", "?"] it will be new line.
     ex. 
@@ -31,7 +32,6 @@ Better git support:
 
             "
     Space after marks will continue to remain.
-
     If "Hello...":
         The output will be:
             "Hello.
@@ -42,11 +42,10 @@ Better git support:
 
 
 Comments:
+
     When % exists it will be space after. 
     If spaces already exist:
         There will be extra space after and before "%" --> " % ".
-        
-
     If it's more than one % after each other:
         "%%%" ---> " %  %  % ow"
 
