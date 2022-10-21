@@ -67,6 +67,6 @@ Comments:
 
 Test of functions:
 
-    To start the tests of the functions type the command pytest.
+    To start the tests of the functions type the command [pytest].
     The tests will either be true(succeed) or false(fail).
     The tests shows the input that have been made and the output and what it expected. 
