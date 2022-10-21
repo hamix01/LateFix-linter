@@ -60,7 +60,7 @@ def space_after_comment(text):
     for line in text.split("\n"):
         if contain_word("%", line):
             line = line.replace("%", " % ")
-        final_text += line + "\n"
+        final_text += line
     return final_text
 
 def contain_word(word, string):

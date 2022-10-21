@@ -1,5 +1,5 @@
 """
-This is the main file
+This is the main file for the LateFix project
 """
 import argparse
 import json
@@ -38,6 +38,7 @@ def main():
 
 
     if functions.is_tex(args.file):
+        print("LateFix Linter...")
         print("Line break size: " + str(line_break_size))
         print("Better git support: " + str(better_git_support))
         functions.logic(args.file, better_git_support, line_break_size)
