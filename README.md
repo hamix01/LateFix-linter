@@ -3,6 +3,27 @@
 This is a simple latex linter that is going to take a file as an input and fix it
 
 
+Use program:
+
+    To start the program enter command [python3 main.py [filename.tex]]
+    Terminal will print The standard size of line brakes after chapters.
+    Terminal will print if better git support is active with "True" or if not active "False"
+    
+    The output should look like:
+    "
+    LateFix Linter...
+    Line break size: 0
+    Better git support: False
+    "
+
+    To active better git support enter command [python3 main.py [filename.tex] -git True/False]
+
+    To add new lines after chapter [python3 main.py [filename.tex] -git True/False -line [number_of_lines]] or 
+    [python3 main.py [filename.tex] -line [number_of_lines]]
+    
+    Please note that new line between chapter is not implemented and nothing will happen with the text if you use the command.
+
+
 Lists:
 
     If \begin{document}
